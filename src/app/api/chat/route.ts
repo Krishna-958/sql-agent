@@ -13,7 +13,7 @@ import {
 import { db, turso } from "@/src/db/db";
 
 const groq = createGroq({
-  apiKey: process.env.GROQ_API_KEY,
+    apiKey: process.env.GROQ_API_KEY,
 });
 
 //Allow streaming responses up to 30 seconds
@@ -49,7 +49,7 @@ export async function POST(req: Request) {
                     return `CREATE TABLE products (
 	id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	name text NOT NULL,
-	ategory text NOT NULL,
+	category text NOT NULL,
 	price real NOT NULL,
 	stock integer DEFAULT 0 NOT NULL,
 	created_at text DEFAULT CURRENT_TIMESTAMP
@@ -81,7 +81,9 @@ CREATE TABLE sales (
 
                     const result = await turso.execute(query);
 
-                    return result.rows;
+                    return {
+                        rows: result.rows,
+                    };
                 },
                 //todo: In case run this execute code when error occurs from DB
                 // execute: async ({ query }) => {
