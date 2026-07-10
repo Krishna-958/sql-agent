@@ -72,34 +72,35 @@ CREATE TABLE sales (
                 inputSchema: z.object({
                     query: z.string().describe('The SQL query to be ran'),
                 }),
-                // execute: async ({ query }) => {
-                //     // console.log('Query', query);
-                //     // // Important: make sure you sanitize / validate (somehow) check the query
-                //     // // string search [delete, update] -> Guadrails
-                //     // return await turso.execute(query);
-                //     console.log(query);
-
-                //     const result = await turso.execute(query);
-
-                //     return result.rows;
-                // },
                 execute: async ({ query }) => {
-                    console.log("========== DB TOOL ==========");
-                    console.log("SQL:", query);
+                    // console.log('Query', query);
+                    // // Important: make sure you sanitize / validate (somehow) check the query
+                    // // string search [delete, update] -> Guadrails
+                    // return await turso.execute(query);
+                    console.log(query);
 
-                    try {
-                        const result = await turso.execute(query);
+                    const result = await turso.execute(query);
 
-                        console.log("Rows:", result.rows);
-
-                        return {
-                            rows: result.rows,
-                        };
-                    } catch (error) {
-                        console.error("DB ERROR:", error);
-                        throw error;
-                    }
+                    return result.rows;
                 },
+                //todo: In case run this execute code when error occurs from DB
+                // execute: async ({ query }) => {
+                //     console.log("========== DB TOOL ==========");
+                //     console.log("SQL:", query);
+
+                //     try {
+                //         const result = await turso.execute(query);
+
+                //         console.log("Rows:", result.rows);
+
+                //         return {
+                //             rows: result.rows,
+                //         };
+                //     } catch (error) {
+                //         console.error("DB ERROR:", error);
+                //         throw error;
+                //     }
+                // },
             }),
         },
     });
