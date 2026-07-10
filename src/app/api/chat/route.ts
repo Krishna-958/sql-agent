@@ -1,4 +1,5 @@
 import { google } from "@ai-sdk/google";
+import { createGroq } from "@ai-sdk/groq";
 import z from "zod";
 import {
     streamText,
@@ -10,6 +11,10 @@ import {
     stepCountIs
 } from 'ai';
 import { db, turso } from "@/src/db/db";
+
+const groq = createGroq({
+  apiKey: process.env.GROQ_API_KEY,
+});
 
 //Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -32,7 +37,7 @@ export async function POST(req: Request) {
     Always respond in a helpful, conversational tone whole being technically accurate.`;
 
     const result = streamText({
-        model: google("gemini-2.5-flash"),
+        model: groq("llama-3.3-70b-versatile"),
         messages: await convertToModelMessages(messages),
         system: SYSTEM_PROMPT,
         stopWhen: stepCountIs(5),
@@ -67,16 +72,33 @@ CREATE TABLE sales (
                 inputSchema: z.object({
                     query: z.string().describe('The SQL query to be ran'),
                 }),
+                // execute: async ({ query }) => {
+                //     // console.log('Query', query);
+                //     // // Important: make sure you sanitize / validate (somehow) check the query
+                //     // // string search [delete, update] -> Guadrails
+                //     // return await turso.execute(query);
+                //     console.log(query);
+
+                //     const result = await turso.execute(query);
+
+                //     return result.rows;
+                // },
                 execute: async ({ query }) => {
-                    // console.log('Query', query);
-                    // // Important: make sure you sanitize / validate (somehow) check the query
-                    // // string search [delete, update] -> Guadrails
-                    // return await turso.execute(query);
-                    console.log(query);
+                    console.log("========== DB TOOL ==========");
+                    console.log("SQL:", query);
 
-                    const result = await turso.execute(query);
+                    try {
+                        const result = await turso.execute(query);
 
-                    return result.rows;
+                        console.log("Rows:", result.rows);
+
+                        return {
+                            rows: result.rows,
+                        };
+                    } catch (error) {
+                        console.error("DB ERROR:", error);
+                        throw error;
+                    }
                 },
             }),
         },

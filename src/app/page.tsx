@@ -41,7 +41,7 @@ export default function Chat() {
                     <div className='font-semibold text-blue-700 dark:text-blue-300 mb-1'>
                       Database query
                     </div>
-                    {(part.input as unknown as AIInput).query && (
+                    {(part.input as AIInput | undefined)?.query && (
                       <pre className='text-xs bg-white dark:bg-zinc-900 p-2 rounded mb-2
                         overflow-x-auto'>
                         {(part.input as unknown as AIInput).query}
