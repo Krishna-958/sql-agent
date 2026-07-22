@@ -264,7 +264,7 @@ How many transactions were recorded this month?
 
 # 🌐 Live Demo
 
-[SQL Agent Demo](https://sql-agent-dw7lv0y0a-krishnas-projects-bb02b325.vercel.app?utm_source=chatgpt.com)
+https://sql-agent-dw7lv0y0a-krishnas-projects-bb02b325.vercel.app
 
 ---
 
